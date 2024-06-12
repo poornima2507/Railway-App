@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import NavBar from './NavBar'
+import axios from 'axios'
 
 const ViewAll = () => {
+    const [data,changeData] = useState([])
+    const fetchData=()=>{
+        axios.post("http://localhost:8085/view",data).then(
+            (response)=>{
+                changeData(response.data)
+            }
+        ).catch().finally()
+    }
+    useEffect(()=>{fetchData()},[])
     return (
         <div>
+            <NavBar/>
             <div className="container">
                 <div className="row">
                     <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -15,20 +27,24 @@ const ViewAll = () => {
                                             <th scope="col">Age</th>
                                             <th scope="col">Source</th>
                                             <th scope="col">Destination</th>
-                                            <th scope="col">Date</th>
+                                           
                                             <th scope="col">Phone No</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        {data.map(
+                                            (value,index)=>{
+                                                return <tr>
                                             
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                        </tr>
+                                                <td>{value.name}</td>
+                                                <td>{value.age}</td>
+                                                <td>{value.source}</td>
+                                                <td>{value.destination}</td>
+                                                
+                                                <td>{value.phoneno}</td>
+                                            </tr>
+                                            }
+                                        )}
                                         
                                     </tbody>
                                 </table>
